@@ -1,0 +1,20 @@
+# Use Node.js as base image
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install ESLint and TypeScript related packages globally to make them available in PATH
+RUN npm install -g eslint typescript typescript-eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks @eslint/create-config
+
+# Copy ESLint configuration files
+COPY eslint.config.js ./
+
+# Create scripts directory and add lint script
+RUN mkdir -p /app/scripts
+COPY lint.sh /app/scripts/
+RUN chmod +x /app/scripts/lint.sh
+
+# Set the entrypoint to the lint script
+# ENTRYPOINT ["/app/scripts/lint.sh"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
